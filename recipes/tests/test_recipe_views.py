@@ -84,3 +84,13 @@ class RecipeViewsTest(RecipeTestBase):
                     'id': recipe.id})  # type: ignore
         )
         self.assertEqual(response.status_code, 404)
+
+    def test_recipe_detail_context_loads_recipes(self):
+        self.make_recipe()
+        response = self.client.get(
+            reverse('recipes:recipe', kwargs={'id': 1})
+        )
+        response_recipes = response.context['recipe']
+        ...
+
+        self.assertEqual(response_recipes.title, 'Recipe Title test')
