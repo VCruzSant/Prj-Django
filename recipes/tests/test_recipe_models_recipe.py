@@ -28,7 +28,7 @@ class RecipeModelTest(RecipeTestBase):
         recipe.save()
         return recipe
 
-    def test_recipe_title_has_raises_if_title_have_more_65_chars(self):
+    def test_recipe_fields_has_raises_if_title_have_more_65_chars(self):
         self.recipe.title = 'A' * 70
 
         with self.assertRaises(ValidationError):
@@ -52,3 +52,7 @@ class RecipeModelTest(RecipeTestBase):
     def test_recipe_is_published_is_fale_by_default(self) -> None:
         recipe = self.make_recipe_no_default()
         self.assertFalse(recipe.is_published)
+
+    def test_recipe_string_representation(self):
+        self.recipe.title = 'Test Representation'
+        self.assertEqual(str(self.recipe), 'Test Representation')
