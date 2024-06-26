@@ -32,7 +32,7 @@ class RecipeTestBase(TestCase):
             author_data=None,
             title='Recipe Title test',
             description='Recipe Description',
-            slug='recipe-slug',
+            slug='recipe-slug-test-1',
             preparation_time=1,
             preparation_time_unit='Hour',
             servings='3',

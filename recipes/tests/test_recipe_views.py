@@ -91,6 +91,12 @@ class RecipeViewsTest(RecipeTestBase):
             reverse('recipes:recipe', kwargs={'id': 1})
         )
         response_recipes = response.context['recipe']
-        ...
-
         self.assertEqual(response_recipes.title, 'Recipe Title test')
+
+    def test_recipe_search_load_correct_view(self):
+        resolved = resolve(reverse('recipes:search'))
+        self.assertIs(resolved.func, views.search)
+
+    def test_recipe_search_context_loads_correct_template(self):
+        response = self.client.get(reverse('recipes:search'))
+        self.assertTemplateUsed(response, 'recipes/pages/search.html')
