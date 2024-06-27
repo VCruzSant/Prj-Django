@@ -104,3 +104,9 @@ class RecipeViewsTest(RecipeTestBase):
     def test_recipe_search_404_if_no_input_term(self):
         response = self.client.get(reverse('recipes:search'))
         self.assertEqual(response.status_code, 404)
+
+    def test_recipe_search_term_is_on_page_title_scaped(self):
+        url = reverse('recipes:search') + '?q=test'
+        response = self.client.get(url)
+        self.assertIn('Search for &quot;test&quot;',
+                      response.content.decode('utf-8'))
