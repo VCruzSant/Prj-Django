@@ -1,6 +1,7 @@
 # from unittest import skip
 
 from django.urls import reverse, resolve
+from unittest.mock import patch
 
 from recipes import views
 from .test_recipe_base import RecipeTestBase
@@ -38,3 +39,15 @@ class RecipeHomeViewTest(RecipeTestBase):
         self.make_recipe(is_published=False)
         response = self.client.get(reverse('recipes:home'))
         self.assertIn('No Recipes Found', response.content.decode('utf-8'))
+
+    @patch('recipes.views.PER_PAGE', new=3)
+    def test_recipe_home_view_load_pagination(self):
+        for i in range(9):
+            kwargs = {'author_data': {'username': f'u{i}'}, 'slug': f'r{i}'}
+            self.make_recipe(**kwargs)
+
+        response = self.client.get(reverse('recipes:home'))
+        recipes = response.context['recipes']
+        paginator = recipes.paginator
+
+        self.assertEqual(paginator.num_pages, 3)
