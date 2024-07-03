@@ -370,3 +370,15 @@ h6 {
     background: var(--color-debug-light);
     color: var(--color-debug-dark);
   }
+
+  .message-container {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: calc(var(--spacing-gutter-medium) / 2);
+  }
+
+  @media (max-width: 600px) {
+    .main-content-list {
+        grid-template-columns: repeat(auto-fit, minmax(100% 1fr));
+    }
+  }
