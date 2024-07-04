@@ -17,3 +17,17 @@ class AuthorRegisterFormUnitTest(TestCase):
         current = form[field].field.widget.attrs['placeholder']
 
         self.assertEqual(current, needed)
+
+    @parameterized.expand([
+        ('password', 'Password must have at least one uppercase letter, '
+                     'one lowercase letter, '
+                     'password must contain at least one number, '
+         'must contain at least one special character (e.g., !@#$%^&*)'
+         ),
+        ('email', 'Must be valid'),
+    ])
+    def test_fields_help_text_is_correct(self, field, needed):
+        form = RegisterForm()
+        current = form[field].field.help_text
+
+        self.assertEqual(current, needed)
