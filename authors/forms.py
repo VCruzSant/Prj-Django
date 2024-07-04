@@ -37,10 +37,16 @@ def strong_password(password):
 
 
 class RegisterForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        add_placeholder(self.fields['username'], 'Your username')
+        add_placeholder(self.fields['email'], 'Your e-mail')
+        add_placeholder(self.fields['last_name'], 'Your Last Name')
+
     password = forms.CharField(
         required=True,
         widget=forms.PasswordInput(attrs={
-            'placeholder': 'Your password'
+            'placeholder': 'Type your password here'
         }),
         error_messages={
             'required': 'Password must not be empty'
@@ -57,7 +63,7 @@ class RegisterForm(forms.ModelForm):
     password2 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                'placeholder': 'Confirm your password'
+                'placeholder': 'Confirm your password here'
             }
         ),
         label='Confirm Password',
@@ -100,9 +106,6 @@ class RegisterForm(forms.ModelForm):
         widgets = {
             'first_name': forms.TextInput(attrs={
                 'placeholder': 'Type your username here'
-            }),
-            'password': forms.PasswordInput(attrs={
-                'placeholder': 'Type your password here'
             })
         }
 

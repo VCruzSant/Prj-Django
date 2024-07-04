@@ -31,8 +31,8 @@ class RecipeHomeViewTest(RecipeTestBase):
         self.make_recipe()
         response = self.client.get(reverse('recipes:home'))
         response_recipes = response.context['recipes']
-
-        self.assertEqual(response_recipes.first().title, 'Recipe Title test')
+        ...
+        self.assertEqual(response_recipes[0].title, 'Recipe Title test')
 
     def test_recipe_home_template_not_published_dont_load_recipe(self):
         # If not is_published, dont show
