@@ -57,7 +57,8 @@ class RegisterForm(forms.ModelForm):
             'password must contain at least one number, '
             'must contain at least one special character (e.g., !@#$%^&*)'
         ),
-        validators=[strong_password]
+        validators=[strong_password],
+        label='Password'
     )
 
     password2 = forms.CharField(
