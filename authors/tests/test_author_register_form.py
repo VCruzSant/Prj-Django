@@ -1,5 +1,8 @@
+from django.test import TestCase as DjangoTestCase
+from django.urls import reverse
+
 from authors.forms import RegisterForm
-from django.test import TestCase
+from unittest import TestCase
 from parameterized import parameterized
 
 
@@ -45,3 +48,42 @@ class AuthorRegisterFormUnitTest(TestCase):
         current = form[field].field.label
 
         self.assertEqual(current, needed)
+
+
+class AuthorRegisterFormIntegrationTest(DjangoTestCase):
+    def setUp(self, *args, **kwargs) -> None:
+        self.form_data = {
+            'username': 'User',
+            'first_name': 'First',
+            'last_name': 'Last',
+            'email': 'email@test.com',
+            'password': 'Str@0ngPass',
+            'password2': 'Str@0ngPass',
+        }
+        return super().setUp(*args, **kwargs)
+
+    @parameterized.expand([
+        ('username', 'This field must not be empty'),
+        ('email', 'Must be valid'),
+        ('password', 'Password must not be empty'),
+        ('password2', 'Password must not be empty'),
+    ])
+    def test_fields_cannot_be_empty(self, field, msg):
+        self.form_data[field] = ''
+        url = reverse('authors:create')
+        response = self.client.post(url, data=self.form_data, follow=True)
+        self.assertIn(msg, response.content.decode('utf-8'))
+
+    def test_username_field_min_lenght_should_be_150(self):
+        self.form_data['username'] = 'vin'
+        msg = 'Username must have at least 4 characters'
+        url = reverse('authors:create')
+        response = self.client.post(url, self.form_data, follow=True)
+        self.assertIn(msg, response.content.decode('utf-8'))
+
+    def test_username_field_max_lenght_should_be_4(self):
+        self.form_data['username'] = 'v' * 151
+        msg = 'Username must have last less than 150 characters'
+        url = reverse('authors:create')
+        response = self.client.post(url, self.form_data, follow=True)
+        self.assertIn(msg, response.content.decode('utf-8'))
