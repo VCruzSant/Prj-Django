@@ -87,3 +87,27 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         url = reverse('authors:create')
         response = self.client.post(url, self.form_data, follow=True)
         self.assertIn(msg, response.content.decode('utf-8'))
+
+    def test_password_field_should_be_strong(self):
+        self.form_data['password'] = 'abcdef'
+        msg = 'Password must have at least one uppercase letter, '
+        'one lowercase letter, '
+        'password must contain at least one number, '
+        'must contain at least one special character (e.g., !@#$%^&*)'
+        url = reverse('authors:create')
+        response = self.client.post(url, self.form_data, follow=True)
+        self.assertIn(msg, response.content.decode('utf-8'))
+
+    def test_password_and_confirmation_are_equal(self):
+        self.form_data['password'] = 'Str@0ngPass'
+        self.form_data['password2'] = 'Str@0ngPassw'
+        msg = 'Password and Confirm password must be equal'
+        url = reverse('authors:create')
+        response = self.client.post(url, self.form_data, follow=True)
+        self.assertIn(msg, response.content.decode('utf-8'))
+
+    def test_send_get_request_to_register_view_return_404(self):
+        url = reverse('authors:create')
+        response = self.client.get(url, self.form_data, follow=True)
+
+        self.assertEqual(response.status_code, 404)
