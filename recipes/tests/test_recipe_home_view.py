@@ -31,7 +31,6 @@ class RecipeHomeViewTest(RecipeTestBase):
         self.make_recipe()
         response = self.client.get(reverse('recipes:home'))
         response_recipes = response.context['recipes']
-        ...
         self.assertEqual(response_recipes[0].title, 'Recipe Title test')
 
     def test_recipe_home_template_not_published_dont_load_recipe(self):
@@ -51,3 +50,21 @@ class RecipeHomeViewTest(RecipeTestBase):
         paginator = recipes.paginator
 
         self.assertEqual(paginator.num_pages, 3)
+
+    @patch('recipes.views.PER_PAGE', new=3)
+    def test_page_query_invalid(self):
+        for i in range(9):
+            kwargs = {'author_data': {'username': f'u{i}'}, 'slug': f'r{i}'}
+            self.make_recipe(**kwargs)
+
+        response = self.client.get(reverse('recipes:home') + '?page=1A')
+        self.assertEqual(
+            response.context['recipes'].number,
+            1
+        )
+
+        response = self.client.get(reverse('recipes:home') + '?page=2')
+        self.assertEqual(
+            response.context['recipes'].number,
+            2
+        )
