@@ -2,7 +2,7 @@ from django.shortcuts import render, get_list_or_404, get_object_or_404
 from django.http import Http404
 from django.db.models import Q
 
-from utils.recipes.pagination import make_pagination
+from utils.pagination import make_pagination
 from .models import Recipe
 
 import os
