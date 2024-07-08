@@ -134,3 +134,17 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
             'User e-mail already exists',
             response.context['form'].errors.get('email')
         )
+
+    def test_author_can_login(self):
+        self.client.post(
+            reverse('authors:create'),
+            self.form_data,
+            follow=True
+        )
+
+        is_authenticated = self.client.login(
+            username='User',
+            password='Str@0ngPass'
+        )
+
+        self.assertTrue(is_authenticated)
