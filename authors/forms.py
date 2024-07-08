@@ -113,10 +113,14 @@ class RegisterForm(forms.ModelForm):
             })
         }
 
-    def clean_password(self):
-        data = self.cleaned_data.get('password')
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '')
+        exists = User.objects.filter(email=email).exists()
 
-        return data
+        if exists:
+            raise ValidationError('User e-mail already exists', code='invalid')
+
+        return email
 
     def clean(self):
         cleaned_data = super().clean()
