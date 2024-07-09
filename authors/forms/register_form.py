@@ -55,6 +55,14 @@ class RegisterForm(forms.ModelForm):
 
     )
 
+    email = forms.CharField(
+        label='E-mail',
+        error_messages={
+            'required': 'Must be valid',
+        },
+        help_text='Must be valid'
+    )
+
     class Meta:
         model = User
         fields = [
@@ -69,11 +77,6 @@ class RegisterForm(forms.ModelForm):
         labels = {
             'first_name': 'First name',
             'last_name': 'Last name',
-            'email': 'E-mail',
-        }
-
-        help_texts = {
-            'email': 'Must be valid'
         }
 
         widgets = {
