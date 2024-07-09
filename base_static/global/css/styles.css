@@ -412,6 +412,20 @@ h6 {
     color: var(--color-debug-dark);
   }
 
+  .plaintext-button{
+    display: inline;
+    border:none;
+    background: none;
+    cursor: pointer;
+    color: var(--color-primary);
+  }
+
+  .inline-form {
+    display: inline;
+    font-size: 1.6rem;
+
+  }
+
   .message-container {
     display: flex;
     flex-flow: column nowrap;
