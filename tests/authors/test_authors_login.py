@@ -30,3 +30,33 @@ class AuthorsLoginTest(AuthorsBaseTest):
         self.assertIn(
             f'You are logged with {user.username}', body
         )
+
+    def test_login_raises_404_if_get_request(self):
+        # user try send get request to login create
+        self.browser.get(self.live_server_url +
+                         reverse('authors:login_create'))
+
+        # See error in page
+        body = self.browser.find_element(By.TAG_NAME, 'body').text
+        self.assertIn('Server Error (500)', body)
+
+    def test_login_form_is_invalid(self):
+        # user open login page
+        self.browser.get(self.live_server_url + reverse('authors:login'))
+
+        # user see login form
+        form = self.browser.find_element(
+            By.XPATH, '/html/body/main/div[2]/form'
+        )
+
+        # user try send invalid values
+        username = self.get_by_placeholder(form, 'Type your Username')
+        password = self.get_by_placeholder(form, 'Type your Password')
+        username.send_keys(' ')
+        password.send_keys(' ')
+
+        form.submit()
+
+        # see error message
+        body = self.browser.find_element(By.TAG_NAME, 'body').text
+        self.assertIn('invalid username or password', body)
