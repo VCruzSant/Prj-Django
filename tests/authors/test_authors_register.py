@@ -99,7 +99,7 @@ class AuthorsRegisterTest(AuthorsBaseTest):
 
         self.form_field_test_with_callback(callback)
 
-    def test_user_valid_register_sucess(self):
+    def test_user_valid_register_success(self):
         self.browser.get(self.live_server_url + '/authors/register/')
         form = self.get_form()
 

@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 
 @pytest.mark.functional_test
 class AuthorsLoginTest(AuthorsBaseTest):
-    def test_user_data_valid_sucessfully(self):
+    def test_user_data_valid_successfully(self):
         user = User.objects.create_user(username="usertest", password="pass")
 
         # User open login page
@@ -25,7 +25,7 @@ class AuthorsLoginTest(AuthorsBaseTest):
         password_field.send_keys('pass')
         form.submit()
 
-        # user see login sucess message
+        # user see login success message
         body = self.browser.find_element(By.TAG_NAME, 'body').text
         self.assertIn(
             f'You are logged with {user.username}', body
@@ -80,4 +80,4 @@ class AuthorsLoginTest(AuthorsBaseTest):
 
         # see error message
         body = self.browser.find_element(By.TAG_NAME, 'body').text
-        self.assertIn('invalid username or password', body)
+        self.assertIn('invalid credentials', body)
