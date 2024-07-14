@@ -11,4 +11,5 @@ urlpatterns = [
     path('login/create', views.login_create,  # type: ignore
          name='login_create'),
     path('logout', views.logout_view, name='logout'),
+    path('dashboard', views.dashboard_view, name='dashboard'),
 ]

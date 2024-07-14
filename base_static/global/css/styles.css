@@ -432,6 +432,10 @@ h6 {
     gap: calc(var(--spacing-gutter-medium) / 2);
   }
 
+  .logout-message {
+    margin: 1rem 0;
+  }
+
   @media (max-width: 600px) {
     .main-content-list,
     .form-content-grid {
