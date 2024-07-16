@@ -13,7 +13,17 @@ urlpatterns = [
     path('logout', views.logout_view, name='logout'),
     path('dashboard', views.dashboard_view, name='dashboard'),
     path(
-        'dashboard_recipe_edit/recipe/<int:id>/edit',
+        'dashboard/recipe/register/',
+        views.register_recipe_view,
+        name='dashboard_recipe_register'
+    ),
+    path(
+        'dashboard/recipe/register/create/',
+        views.register_recipe_create,
+        name='register_recipe_create'
+    ),
+    path(
+        'dashboard/recipe/<int:id>/edit',
         views.dashboard_recipe_edit,
         name='dashboard_recipe_edit'
     ),

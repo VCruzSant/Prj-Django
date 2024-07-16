@@ -144,3 +144,46 @@ def dashboard_recipe_edit(request, id):
             "form": form
         }
     )
+
+
+def register_recipe_view(request):
+    register_recipe_data = request.session.get('register_recipe_data', None)
+    form = AuthorRecipeForm(register_recipe_data)
+
+    return render(
+        request,
+        'authors/pages/dashboard_recipe.html',
+        {
+            "form": form,
+            "form_action": reverse('authors:register_recipe_create')
+        }
+    )
+
+
+def register_recipe_create(request):
+    if not request.POST:
+        raise Http404
+
+    request.session['register_recipe_data'] = request.POST
+    form = AuthorRecipeForm(
+        request.POST,
+        files=request.FILES or None,
+    )
+
+    if form.is_valid():
+        recipe = form.save(commit=False)
+
+        recipe.author = request.user
+        recipe.preparation_steps_is_html = False
+        recipe.is_published = False
+
+        recipe.save()
+
+        del (request.session['register_recipe_data'])
+        messages.success(request, 'Your recipe has been created')
+        return redirect(
+            reverse('authors:dashboard_recipe_edit', args=(recipe.id,))
+        )
+    return redirect(
+        reverse('authors:dashboard_recipe_register')
+    )
