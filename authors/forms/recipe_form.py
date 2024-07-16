@@ -8,7 +8,6 @@ class AuthorRecipeForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         add_attr(self.fields.get('preparation_step'), 'class', 'span-2')
-        add_attr(self.fields.get('cover'), 'class', 'span-2')
 
     class Meta:
         model = Recipe
