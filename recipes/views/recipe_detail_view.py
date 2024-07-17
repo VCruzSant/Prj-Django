@@ -15,3 +15,9 @@ class RecipeDetailView(DetailView):
         )
 
         return context
+
+    def get_queryset(self, **kwargs):
+        qs = super().get_queryset(**kwargs)
+        qs = qs.filter(is_published=True)
+
+        return qs
