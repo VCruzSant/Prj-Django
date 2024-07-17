@@ -187,3 +187,21 @@ def register_recipe_create(request):
     return redirect(
         reverse('authors:dashboard_recipe_register')
     )
+
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def dashboard_recipe_delete(request):
+    if not request.POST:
+        raise Http404
+
+    id = request.POST.get('id')
+
+    recipe = Recipe.objects.filter(
+        is_published=False,
+        author=request.user,
+        id=id
+    ).first()
+
+    recipe.delete()  # type: ignore
+    messages.success(request, 'Your recipe has been deleted')
+    return redirect(reverse('authors:dashboard'))
