@@ -1,8 +1,9 @@
 import os
 
-from django.views.generic import ListView
+from django.http import Http404
 from django.shortcuts import get_list_or_404
 from django.db.models import Q
+from django.views.generic import ListView
 
 from ..models import Recipe
 from utils.pagination import make_pagination
@@ -50,12 +51,23 @@ class RecipeListViewCategory(RecipeListViewBase):
         )
         return qs
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        title = f'{context.get("recipes")[0].category.name} - Category',
+
+        context.update({'title': title})
+        return context
+
 
 class RecipeListViewSearch(RecipeListViewBase):
     template_name = 'recipes/pages/search.html'
 
     def get_queryset(self, *args, **kwargs):
         search_term = self.request.GET.get('q', '').strip()
+
+        if not search_term:
+            raise Http404
+
         qs = super().get_queryset(*args, **kwargs)
         qs = qs.filter(
             Q(

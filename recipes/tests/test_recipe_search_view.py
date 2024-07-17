@@ -9,7 +9,7 @@ from .test_recipe_base import RecipeTestBase
 class RecipeSearchViewTest(RecipeTestBase):
     def test_recipe_search_load_correct_view(self):
         resolved = resolve(reverse('recipes:search'))
-        self.assertIs(resolved.func, views.search)
+        self.assertIs(resolved.func.view_class, views.RecipeListViewSearch)
 
     def test_recipe_search_context_loads_correct_template(self):
         response = self.client.get(reverse('recipes:search') + '?q=test')

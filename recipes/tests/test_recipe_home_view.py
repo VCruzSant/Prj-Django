@@ -11,7 +11,7 @@ class RecipeHomeViewTest(RecipeTestBase):
     # @skip('WIP(work in progress)')
     def test_recipe_home_view_function_is_correct(self):
         view = resolve(reverse('recipes:home'))
-        self.assertIs(view.func, views.home)
+        self.assertIs(view.func.view_class, views.RecipeListViewHome)
         # Force test fail to implement in future
         # self.fail()
 
@@ -39,7 +39,7 @@ class RecipeHomeViewTest(RecipeTestBase):
         response = self.client.get(reverse('recipes:home'))
         self.assertIn('No Recipes Found', response.content.decode('utf-8'))
 
-    @patch('recipes.views.all.PER_PAGE', new=3)
+    @patch('recipes.views.recipe_list_view.PER_PAGE', new=3)
     def test_recipe_home_view_load_pagination(self):
         self.make_recipe_batch()
 
@@ -49,7 +49,7 @@ class RecipeHomeViewTest(RecipeTestBase):
 
         self.assertEqual(paginator.num_pages, 3)
 
-    @patch('recipes.views.all.PER_PAGE', new=3)
+    @patch('recipes.views.recipe_list_view.PER_PAGE', new=3)
     def test_page_query_invalid(self):
         self.make_recipe_batch()
 
