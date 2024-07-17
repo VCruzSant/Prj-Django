@@ -1,13 +1,19 @@
 from django.http.response import Http404
 from django.views import View
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 
 from recipes.models import Recipe
 from authors.forms.recipe_form import AuthorRecipeForm
 
 
+@method_decorator(
+    login_required(login_url='authors:login', redirect_field_name='next'),
+    name='dispatch'
+)
 class DashboardRecipe(View):
     def get_recipe(self, id=None):
         recipe = None
@@ -57,3 +63,12 @@ class DashboardRecipe(View):
                 reverse('authors:dashboard_recipe_edit', args=(recipe.id,))
             )
         return self.render_recipe(form)
+
+
+class DashboardRecipeDelete(DashboardRecipe):
+    def post(self, request):
+        recipe = self.get_recipe(request.POST.get('id'))
+        recipe.delete()  # type: ignore
+
+        messages.success(request, 'Your recipe has been deleted')
+        return redirect(reverse('authors:dashboard'))
