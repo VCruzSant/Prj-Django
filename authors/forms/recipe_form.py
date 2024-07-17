@@ -56,7 +56,7 @@ class AuthorRecipeForm(forms.ModelForm):
 
     def clean_title(self):
         field_name = 'title'
-        field_message = 'Must have be positive number'
+        field_message = 'Must have at least 5 characters'
 
         field_value = self.cleaned_data.get(field_name)
 

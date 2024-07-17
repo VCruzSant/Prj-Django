@@ -16,7 +16,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard_view, name='dashboard'),
     path(
         'dashboard/recipe/register/',
-        views.register_recipe_view,
+        views.DashboardRecipe.as_view(),
         name='dashboard_recipe_register'
     ),
     path(
