@@ -22,6 +22,10 @@ class RecipeListViewBase(ListView):
         qs = qs.filter(
             is_published=True
         )
+
+        # Optmize ForeignKey queries
+        qs = qs.select_related('author', 'category')
+
         return qs
 
     def get_context_data(self, *args, **kwargs):
@@ -65,7 +69,7 @@ class RecipeListViewCategory(RecipeListViewBase):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        title = f'{context.get("recipes")[0].category.name} - Category',
+        title = f'{context.get("recipes")[0].category.name} '  # type: ignore
 
         context.update({'title': title})
         return context
