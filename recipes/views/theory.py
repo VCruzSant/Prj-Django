@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from recipes.models import Recipe
+from django.db.models.aggregates import Count, Sum, Min, Max
 # from django.db.models import Q, F
 
 
@@ -28,11 +29,17 @@ def theory(request, *args, **kwargs):
     # recipes = Recipe.objects \
     #     .only('id', 'title')[10:20]
 
+    # recipes = Recipe.objects \
+    #     .defer('is_published')[10:20]
+
     recipes = Recipe.objects \
-        .defer('is_published')[10:20]
+        .values('id', 'title')[10:20]
+
+    number_od = recipes.aggregate(number=Count('id'))
 
     context = {
-        'recipes': recipes
+        'recipes': recipes,
+        'number_od': number_od['number']
     }
 
     return render(
