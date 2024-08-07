@@ -10,9 +10,11 @@
     <ul>
         {% for recipe in recipes %}
         <li>
-            {{recipe.id}} -
+            {% comment %} {{recipe.id}} -
             {{recipe.title}} -
-            {{recipe.author__username}}
+            {{recipe.author__username}} {% endcomment %}
+            {{recipe.id}} - 
+            {{recipe.title}}
         </li>
         {% empty %}
             <p>No recipes found</p>

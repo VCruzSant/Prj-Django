@@ -22,8 +22,14 @@ def theory(request, *args, **kwargs):
     #     id=F('author__id'),
     # )[:10]
 
+    # recipes = Recipe.objects \
+    #     .values('id', 'title', 'author__username')[10:20]
+
+    # recipes = Recipe.objects \
+    #     .only('id', 'title')[10:20]
+
     recipes = Recipe.objects \
-        .values('id', 'title', 'author__username')[10:20]
+        .defer('is_published')[10:20]
 
     context = {
         'recipes': recipes
