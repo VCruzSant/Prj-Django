@@ -18,7 +18,7 @@ class Tag(models.Model):
     # Model:
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     # Model id
-    object_id = models.CharField()
+    object_id = models.CharField(max_length=255)
     # Relation Generic Field
     content_object = GenericForeignKey('content_type', 'object_id')
 

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # My Apps:
     'recipes',
     'authors',
+    'tag'
 ]
 
 MIDDLEWARE = [
