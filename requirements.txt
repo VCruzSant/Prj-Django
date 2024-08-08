@@ -3,6 +3,7 @@ attrs==23.2.0
 certifi==2024.7.4
 coverage==7.5.4
 Django==5.0.6
+django-debug-toolbar==4.4.6
 Faker==25.9.1
 flake8==7.1.0
 h11==0.14.0
@@ -21,6 +22,7 @@ pyflakes==3.2.0
 PySocks==1.7.1
 pytest==8.2.2
 pytest-django==4.8.0
+pytest-dotenv==0.5.2
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 selenium==4.22.0
