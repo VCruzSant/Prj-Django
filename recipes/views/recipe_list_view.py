@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.views.generic import ListView
 
 from ..models import Recipe
+from tag.models import Tag
 from utils.pagination import make_pagination
 
 PER_PAGE = int(os.environ.get('PER_PAGE', 6))
@@ -25,6 +26,7 @@ class RecipeListViewBase(ListView):
 
         # Optmize ForeignKey queries
         qs = qs.select_related('author', 'category')
+        qs = qs.prefetch_related('tags')
 
         return qs
 
@@ -102,6 +104,30 @@ class RecipeListViewSearch(RecipeListViewBase):
             {
                 'page_title': f'Search for "{search_term}"',
                 'additional_url_query': f'&q={search_term}'
+            }
+        )
+        return context
+
+
+class RecipeListViewTag(RecipeListViewBase):
+    template_name = 'recipes/pages/search.html'
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        qs = qs.filter(tags__slug=self.kwargs.get('slug', ''))
+        return qs
+
+    def get_context_data(self, *args, **kwargs):
+        page_title = Tag.objects \
+            .filter(slug=self.kwargs.get('slug', '')).first()
+        context = super().get_context_data(*args, **kwargs)
+
+        if not page_title:
+            page_title = 'No recipes Found'
+
+        context.update(
+            {
+                'page_title': f'Search for "{page_title}"',
             }
         )
         return context
