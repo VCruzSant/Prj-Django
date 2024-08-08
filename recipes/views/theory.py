@@ -2,8 +2,8 @@ from django.shortcuts import render
 from recipes.models import Recipe
 # from django.db.models.aggregates import Count, Sum, Min, Max
 # from django.db.models import Q, F
-from django.db.models import Value, F
-from django.db.models.functions import Concat
+# from django.db.models import Value, F
+# from django.db.models.functions import Concat
 
 
 def theory(request, *args, **kwargs):
@@ -39,14 +39,16 @@ def theory(request, *args, **kwargs):
 
     # number_od = recipes.aggregate(number=Count('id'))
 
-    recipes = Recipe.objects.all().annotate(
-        author_full_name=Concat(
-            F('author__first_name'), F('author__last_name'),
-            Value(' ('),
-            F('author__username'),
-            Value(')')
-        )
-    )[:10]
+    # recipes = Recipe.objects.all().annotate(
+    #     author_full_name=Concat(
+    #         F('author__first_name'), F('author__last_name'),
+    #         Value(' ('),
+    #         F('author__username'),
+    #         Value(')')
+    #     )
+    # )[:10]
+
+    recipes = Recipe.objects.get_published()[:10]  # type: ignore
 
     context = {
         'recipes': recipes,
